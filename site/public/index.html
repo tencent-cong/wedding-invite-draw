@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>集合啦 婚礼森友会 · 抽取你的邀请函</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: #6b563a;
+    background: #a8dcef;
+    background-image:
+      radial-gradient(circle at 12% 12%, rgba(255,255,255,.55) 0 6px, transparent 7px),
+      radial-gradient(circle at 78% 30%, rgba(255,255,255,.4) 0 5px, transparent 6px),
+      linear-gradient(180deg, #a3daee 0%, #b9e6f3 45%, #cdeee0 100%);
+    background-size: 180px 180px, 240px 240px, 100% 100%;
+    display: flex;
+    justify-content: center;
+    padding: 22px 16px 40px;
+  }
+  .wrap { width: 100%; max-width: 430px; }
+  .logo {
+    display: flex; justify-content: center; gap: 6px; margin-bottom: 6px;
+  }
+  .logo span {
+    width: 40px; height: 40px; border-radius: 9px; color: #fff;
+    font-size: 24px; font-weight: 800; line-height: 40px; text-align: center;
+    box-shadow: 0 3px 0 rgba(0,0,0,.13);
+  }
+  .logo span:nth-child(1) { background: #35b98b; }
+  .logo span:nth-child(2) { background: #f08a3c; }
+  .logo span:nth-child(3) { background: #3fb56a; }
+  .logo span:nth-child(4) { background: #e2437c; }
+  .logo span:nth-child(5) { background: #2f8ee0; }
+  .sub { text-align: center; font-size: 13px; color: #5d7f88; margin-bottom: 16px; letter-spacing: 1px; }
+
+  .card {
+    background: #fffdf4;
+    border-radius: 26px;
+    padding: 22px 20px 24px;
+    box-shadow: 0 12px 26px rgba(80,110,120,.2);
+    border: 3px solid #fff;
+  }
+  h1 { font-size: 21px; margin: 0 0 8px; text-align: center; color: #6b563a; }
+  .tip { font-size: 13.5px; line-height: 1.75; color: #93815f; text-align: center; margin: 0 0 16px; }
+
+  .stat {
+    display: flex; justify-content: center; gap: 10px; margin-bottom: 18px;
+  }
+  .pill {
+    background: #eef7e6; border-radius: 999px; padding: 7px 15px;
+    font-size: 13px; color: #6e8a52; font-weight: 600;
+  }
+  .pill b { color: #f2736b; font-size: 16px; margin: 0 2px; }
+
+  label { display: block; font-size: 13px; margin: 0 0 7px 4px; color: #8b7757; font-weight: 600; }
+  input {
+    width: 100%; border: 2px solid #ecdfc4; background: #fffef9; border-radius: 14px;
+    padding: 13px 15px; font-size: 16px; color: #6b563a; outline: none;
+    font-family: inherit;
+  }
+  input:focus { border-color: #f5b94f; }
+
+  button {
+    width: 100%; margin-top: 16px; border: 0; cursor: pointer;
+    background: linear-gradient(180deg, #ffd35e, #f7a93c);
+    color: #7a4a12; font-size: 18px; font-weight: 800; letter-spacing: 2px;
+    border-radius: 16px; padding: 15px; font-family: inherit;
+    box-shadow: 0 5px 0 #dd8f28, 0 10px 18px rgba(221,143,40,.3);
+    transition: transform .12s, box-shadow .12s;
+  }
+  button:active { transform: translateY(4px); box-shadow: 0 1px 0 #dd8f28; }
+  button:disabled { background: #e6e0d2; color: #a99f8c; box-shadow: none; cursor: not-allowed; }
+
+  .msg { margin-top: 12px; font-size: 13px; text-align: center; min-height: 18px; color: #e2725b; }
+
+  .result { display: none; }
+  .result.show { display: block; animation: pop .45s ease; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94) translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .code-badge {
+    text-align: center; margin-bottom: 14px;
+  }
+  .code-badge .no {
+    display: inline-block; background: #fff2f0; color: #f2736b;
+    border-radius: 999px; padding: 8px 20px; font-size: 24px; font-weight: 800;
+    letter-spacing: 3px; border: 2px dashed #f8c0b8;
+  }
+  .code-badge p { font-size: 12.5px; color: #a2916f; margin: 9px 0 0; }
+
+  img.invite {
+    width: 100%; border-radius: 18px; display: block;
+    box-shadow: 0 8px 20px rgba(90,110,80,.22);
+  }
+  .save-tip {
+    margin-top: 14px; background: #f4f9ec; border-radius: 14px; padding: 12px 14px;
+    font-size: 12.8px; line-height: 1.7; color: #74895c;
+  }
+  .save-tip b { color: #5f7a44; }
+  .ghost {
+    margin-top: 12px; display: block; text-align: center; text-decoration: none;
+    background: #fff; border: 2px solid #e8dcc0; color: #8b7757;
+    border-radius: 14px; padding: 12px; font-size: 15px; font-weight: 700;
+  }
+  .foot { text-align: center; font-size: 11.5px; color: #6c8b94; margin-top: 18px; line-height: 1.7; }
+
+  .spinner {
+    display: none; margin: 22px auto 6px; width: 42px; height: 42px;
+    border: 5px solid #f3e6c9; border-top-color: #f7a93c; border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  .spinner.show { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .rolling { text-align: center; font-size: 22px; font-weight: 800; color: #f2736b; letter-spacing: 4px; height: 26px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo"><span>婚</span><span>礼</span><span>森</span><span>友</span><span>会</span></div>
+  <div class="sub">快乐哥 ♥ 葱酱 · 邀请函抽取处</div>
+
+  <div class="card" id="panel">
+    <h1>🎋 抽取你的专属邀请函</h1>
+    <p class="tip">每人限抽 <b>1 次</b>，抽中的编号<b>独一无二</b><br />抽完请长按图片保存，当天凭编号参与抽奖</p>
+    <div class="stat">
+      <div class="pill">共 <b id="total">–</b> 张</div>
+      <div class="pill">剩余 <b id="remaining">–</b> 张</div>
+    </div>
+    <label for="name">你的名字 / 昵称</label>
+    <input id="name" placeholder="例如：小明" maxlength="20" autocomplete="off" />
+    <button id="btn">开始抽签</button>
+    <div class="msg" id="msg"></div>
+    <div class="spinner" id="spinner"></div>
+    <div class="rolling" id="rolling"></div>
+  </div>
+
+  <div class="card result" id="result" style="margin-top:16px">
+    <div class="code-badge">
+      <div class="no" id="rcode">NO.0000</div>
+      <p id="rname">这是属于你的邀请函</p>
+    </div>
+    <img class="invite" id="rimg" alt="婚礼邀请函" />
+    <div class="save-tip">
+      📌 <b>长按图片 → 保存到相册</b>（电脑端右键另存为）<br />
+      🎟️ 编号已锁定给你，刷新页面也不会改变<br />
+      🍚 记得 <b>10月6日 下午3:00</b> 来吃席！
+    </div>
+    <a class="ghost" id="dl" download>⬇️ 直接下载图片</a>
+  </div>
+
+  <div class="foot">
+    恒葱直撞岛 · 王者峡谷花园前<br />贵州省安顺市平坝区 · 颐家园小区
+  </div>
+</div>
+
+<script>
+  const KEY = 'wedding-invite-token-v1';
+  let token = localStorage.getItem(KEY);
+  if (!token) {
+    token = 'g_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem(KEY, token);
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const btn = $('btn'), msg = $('msg'), spinner = $('spinner'), rolling = $('rolling');
+
+  function setStat(d) {
+    if (d.total != null) $('total').textContent = d.total;
+    if (d.remaining != null) $('remaining').textContent = d.remaining;
+  }
+
+  function showResult(code, image, name) {
+    $('rcode').textContent = 'NO.' + code;
+    $('rname').textContent = name ? name + '，这是属于你的邀请函' : '这是属于你的邀请函';
+    $('rimg').src = image;
+    const a = $('dl');
+    a.href = image;
+    a.setAttribute('download', '婚礼邀请函_NO' + code + '.jpg');
+    $('result').classList.add('show');
+    btn.disabled = true;
+    btn.textContent = '你已抽过啦 · NO.' + code;
+    $('name').disabled = true;
+    setTimeout(() => $('result').scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+  }
+
+  async function init() {
+    try {
+      const r = await fetch('/api/me?token=' + encodeURIComponent(token));
+      const d = await r.json();
+      setStat(d);
+      if (d.claimed) {
+        msg.style.color = '#6e8a52';
+        msg.textContent = '你的邀请函已经抽好了 🎉';
+        showResult(d.code, d.image, '');
+      } else if (d.remaining === 0) {
+        btn.disabled = true;
+        btn.textContent = '邀请函已全部抽完';
+      }
+    } catch (e) {
+      msg.textContent = '网络连接失败，请稍后重试';
+    }
+  }
+
+  let rollTimer = null;
+  function startRoll() {
+    spinner.classList.add('show');
+    rollTimer = setInterval(() => {
+      rolling.textContent = 'NO.' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+    }, 70);
+  }
+  function stopRoll() {
+    clearInterval(rollTimer);
+    spinner.classList.remove('show');
+    rolling.textContent = '';
+  }
+
+  btn.addEventListener('click', async () => {
+    const name = $('name').value.trim();
+    if (!name) {
+      msg.style.color = '#e2725b';
+      msg.textContent = '先写下你的名字吧～';
+      $('name').focus();
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = '抽签中…';
+    msg.textContent = '';
+    startRoll();
+    const t0 = Date.now();
+    try {
+      const r = await fetch('/api/draw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, name })
+      });
+      const d = await r.json();
+      const wait = Math.max(0, 1600 - (Date.now() - t0));
+      await new Promise((s) => setTimeout(s, wait));
+      stopRoll();
+      setStat(d);
+      if (r.status === 410) {
+        btn.textContent = '邀请函已全部抽完';
+        msg.textContent = '不好意思，邀请函被抽完了，联系新人补一张吧～';
+        return;
+      }
+      if (d.code) {
+        msg.style.color = '#6e8a52';
+        msg.textContent = d.repeat ? '你之前已经抽过了，这就是你的那张 🎉' : '恭喜！抽到啦 🎉';
+        showResult(d.code, d.image, name);
+      } else {
+        btn.disabled = false;
+        btn.textContent = '重新抽签';
+        msg.textContent = '出了点小问题，再试一次～';
+      }
+    } catch (e) {
+      stopRoll();
+      btn.disabled = false;
+      btn.textContent = '重新抽签';
+      msg.textContent = '网络异常，请重试';
+    }
+  });
+
+  init();
+</script>
+</body>
+</html>

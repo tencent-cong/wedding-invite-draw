@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# 打包产物（可由脚本重新生成）
+*.zip
+
+# 抽签记录（运行时数据，不入库）
+site/data/claims.json
+site/data/*.tmp
+
+# 旧版 Node 实现（已弃用，Python 版为准）
+site/server.js
+
+# 中间产物
+assets/strip_*.png
+assets/check_*.png
+assets/grid_*.png
+assets/zone_*.png
