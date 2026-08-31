@@ -129,9 +129,8 @@ for i, ln in enumerate(lines):
 img.save(f'{BASE}/assets/base.png')
 print('base saved')
 
-# ---------- 16 fixed lucky numbers ----------
-codes = [1807, 1901, 1903, 2001, 2011, 2104, 2112, 2202,
-         2303, 2312, 2405, 2412, 2504, 2510, 2606, 2610]
+# ---------- 7 fixed lucky numbers ----------
+codes = [1807, 2104, 2202, 2303, 2405, 2504, 2610]
 import os
 outdir = f'{BASE}/邀请函成品'
 os.makedirs(outdir, exist_ok=True)
